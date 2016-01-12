@@ -36,17 +36,19 @@ function! s:highlight_unused_imports(remove)
 
   while linenr < classStartLine
     let line = getline(linenr)
-	let lis = matchlist(line, '\v^\s*use\s+(\w+\\)+(\w+);')
+    let lis = matchlist(line, '\v^\s*use\s+(\w+\\)+(\w+);')
 
     if len(lis) > 0
-	  let parts = split(split(line, '\')[-1], ';')
+      let parts = split(split(line, '\')[-1], ';')
       let className = parts[0]
 
       call cursor(classStartLine, 1)
       let linefound = search(className, 'nW')
 
       if linefound == 0
-        call add(s:matches_so_far, matchadd('unusedimport', split(line, '\')[-1]))
+        let match = split(line, '\')[-1]
+        echo "Unused import: " . match
+        call add(s:matches_so_far, matchadd('unusedimport', match))
       endif
 
       call cursor(startLine, startCol)
@@ -60,15 +62,16 @@ function! s:highlight_unused_imports(remove)
 
   while linenr < classStartLine
     let line = getline(linenr)
-	let lis = matchlist(line, '\v^\s*use\s+(\w+);')
+    let lis = matchlist(line, '\v^\s*use\s+(\w+);')
 
     if len(lis) > 0
-	  let className = lis[1]
+      let className = lis[1]
 
       call cursor(classStartLine, 1)
       let linefound = search(className, 'nW')
 
       if linefound == 0
+        echo "Unused import: " . className
         call add(s:matches_so_far, matchadd('unusedimport', className))
       endif
 
