@@ -32,7 +32,7 @@ function! s:highlight_unused_imports(remove)
   let linenr = 0
   " where does the class definition start (= where the imports end)
   call cursor(1, 1)
-  let classStartLine = search('\/\*\*')
+  let classStartLine = search('^class\|^interface')
 
   while linenr < classStartLine
     let line = getline(linenr)
